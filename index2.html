@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Nanite Tree Imposter to Mesh Simplification">
+        content="NaniteTree: Imposter to Mesh Simplification">
   <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nanite Tree Imposter to Mesh Simplification</title>
@@ -32,7 +32,7 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/favicon.svg">
+  <link rel="icon" href="./static/images/ICON.ico">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
@@ -60,15 +60,21 @@
 
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
-          Language
+          More Research
         </a>
         <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://nanitetree.github.io">
-            CN
+          <!-- <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
           </a>
-          <a class="navbar-item" href="https://hypernerf.github.io">
-            EN
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
           </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a> -->
         </div>
       </div>
     </div>
@@ -88,6 +94,21 @@
               <a href="https://github.com/jiayaozhang">Jiayao Zhang</a><sup>1</sup>,</span>
             <span class="author-block">
               <a href="https://github.com/Hikohikoyan">Hikohikoyan</a><sup>2</sup>,</span>
+            <!-- <span class="author-block">
+              <a href="https://jonbarron.info">Jonathan T. Barron</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://sofienbouaziz.com">Sofien Bouaziz</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.danbgoldman.com">Dan B Goldman</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://homes.cs.washington.edu/~seitz/">Steven M. Seitz</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://www.ricardomartinbrualla.com">Ricardo Martin-Brualla</a><sup>2</sup>
+            </span> -->
           </div>
 
           <div class="is-size-5 publication-authors">
@@ -116,7 +137,17 @@
                   <span>arXiv</span>
                 </a>
               </span>
-
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://youtu.be/IBIiRY8_2J0?si=wD-0l9izD6YsTjmA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
               <span class="link-block">
                 <a href="https://github.com/jiayaozhang/NaniteTree_Imposter2Mesh_Simplification"
                    class="external-link button is-normal is-rounded is-dark">
@@ -126,7 +157,7 @@
                   <span>Code</span>
                   </a>
               </span>
-
+              <!-- Dataset Link. -->
               <span class="link-block">
                 <a href="https://www.bilibili.com/video/BV1Pk4y1Q7sm/?spm_id_from=333.337.top_right_bar_window_history.content.click&vd_source=1805bbf959fd5bce323236f76f8b8d64"
                    class="external-link button is-normal is-rounded is-dark">
@@ -153,11 +184,9 @@
         <source src="./static/videos/Showcase.mp4"
                 type="video/mp4">
       </video>
-      <div class="content">
-        <p>Left Tree is generated after our Nanite Tree Pipeline, rendered with Opaque leaf material. Right Tree is created using traditional manual workflows, rendered with Masked material and leaf mask textures.</p>
-        <p>Performance: with both tree enabled Nanite & WorldPositionOffset Animation, right tree consumes 2 to 3 times more performance than to the left Tree. 
-          Furthermore, when Nanite is disabled, the performance of right tree increases another 3 ms.</p>
-      </div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">左边是使用了NaniteTreePipeline生成的模型，配合Opaque叶片材质渲染,右边是使用传统手工制作流程的模型，配合Masked材质及叶片遮罩贴图渲染,在都启用Nanite和顶点动画WorldPositionOffset Animation的情况下，左边的性能耗时是右边的一半甚至三分之一；并且在右边不启用Nanite情况下的性能耗时相对开启增加了3ms。
+      </h2>
     </div>
   </div>
 </section>
@@ -170,80 +199,29 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            This is an automated Nanite Tree Tool designed to convert traditional non-Nanite vegetation models into Nanite models suitable for Unreal Engine 5.
-
-            The core functions of this tool include vertex layout reconstruction, polygon merging, and LOD generation, aiming to simplify the process of vegetation asset creation and improve artistic creation efficiency.
-
-            Through our tool, artists can quickly convert original billboard models to leaf modeling vegetation models suitable for Nanite rendering, 
-            achieving higher-quality rendering effects and better performance. 
+            这是一个基于流程的自动工具，旨在将传统的非Nanite植被模型一键转换为兼具最佳性能与效果表现的适用于Unreal Engine Nanite技术的模型资产（包括符合UE规范的碰撞体） 通过该工具，美术人员能够将原始插片模型快速转换为适应Nanite渲染（Opaque）的叶片建模植被模型，从而实现更高质量的渲染效果和更高的性能表现。该工具的核心功能包括顶点布局重建、面数合并和LOD生成，旨在简化植被资产的制作流程并提高美术创作效率。
+            除提供自动化的资产转换功能外，该工具还允许美术人员根据需要微调参数，以优化最终的渲染效果。通过在引擎中验证每一步修改对最终效果的影响，美术人员可以更快地实现满意的渲染结果。
+            作为开源技术，我们希望通过推广我们的工具为Unreal Engine 5的植被制作流程提供了可靠的使用Nanite虚拟网格技术的解决方案，为游戏开发社区献出一项实用的技术工具。
+            通过开源，我们希望激发更多开发者参与其中，共同推动游戏行业的技术进步和创作效率的提升。
           </p>
   
         </div>
       </div>
     </div>
- 
-    <div class="is-centered has-text-centered">
-      <div class="is-four-fifths">
-        <div class="is-3 has-text-centered">
-          <img src="https://hikohiko.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F0d608712-81b7-41af-8caa-374d0e8f6ab6%2F714956db-3786-48f2-a62e-c90608e43e69%2FUntitled.png?table=block&id=bff8adc8-38f5-4a4c-8eb2-947c8014ca45&spaceId=0d608712-81b7-41af-8caa-374d0e8f6ab6&width=2000&userId=&cache=v2"
-               class="interpolation-image"
-               alt="Interpolation end reference image."/>
-          <p class="is-bold">Details of NaniteTreePipeline has been revealed at the 2023 UE Fest speech</p>
-        </div>
-      </div>
-    </div> 
-  </div>
-</section>
-
-
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-<!-- Paper video. -->
-<div class="columns is-centered has-text-centered">
-  <div class="column is-four-fifths">
-    <h2 class="title is-3">Overview of Asset Export to Unreal</h2>
-    <p>
-      Automatically recognize tree trunks , leaves and LODs , UCX based on input rules.
-    </p>
-    <div class="publication-video">
-      <video id="process" autoplay muted loop playsinline height="10%">
-        <source src="./static/videos/GetInput.mp4"
-                type="video/mp4">
-      </video>
-        </div>
-  </div>
-</div> 
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Pipeline Overview -->
+    <!--/ Abstract. -->
+    
+    <!-- Paper video. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Pipeline Overview</h2>
-        <div class="content has-text-justified">
-          <p>
-            In addition to providing automated asset conversion functions,
-            this tool also allows artists to fine-tune parameters as needed to optimize the final rendering effects. 
-            By validating the impact of each modification on the final effect in the engine, artists can achieve satisfactory rendering results faster.
-         </p>
-         <p>
-           As an open-source project, 
-           this tool provides a reliable solution for the vegetation creation process in Unreal Engine 5 and contributes a practical technical tool to the game development community.
-            Through open-source, we hope to inspire more developers to participate and collectively drive technological advancement and creative efficiency in the gaming industry.
-         </p>
-        </div>
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <video id="process" autoplay muted loop playsinline height="100%">
+            <source src="./static/videos/GetInput.mp4"
+                    type="video/mp4">
+          </video>
+            </div>
       </div>
-    </div>
-    <!--/ Pipeline Overview -->
-  </section>
-
-
-
-
+    </div> 
     <!--/ Paper video. -->
   </div>
 </section>
@@ -280,107 +258,141 @@
   </div>
 </section>
 
+
+
+
+
 <section class="section">
-  <div class="container is-centered">
-    <!-- Houdini Part Start -->
-      <div class="columns is-centered">
+  
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">How to Use</h2>
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+  
       <div class="column">
         <div class="content">
           <h2 class="title is-3">Houdini</h2>
-          <h3>Using with HDK & Python</h3>
-          <br>
+          
           <p>
-            Enter the model file and set the corresponding rule parameters (such as the leaf material name of your model, this will be used to identify and distinguish the leaf part from the trunk part)
+            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
+            would be impossible without nerfies since it would require going through a wall.
           </p>
-
+          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/Showcase.mp4"
+                    type="video/mp4">
+          </video>
         </div>
       </div>
+      <!--/ Visual Effects. -->
 
+      <!-- Matting. -->
       <div class="column">
-        <br><br>
-        <div class="content has-text-justified">
-          <img src="./static/images/5.png"
-               class="interpolation-image"
-               alt="Interpolation end reference image."/>
+        <h2 class="title is-3">UnrealProject</h2>
+        <div class="columns is-centered">
+          <div class="column content">
+            <p>
+              As a byproduct of our method, we can also solve the matting problem by ignoring
+              samples that fall outside of a bounding box during rendering.
+            </p>
+            <video id="matting-video" controls playsinline height="100%">
+              <source src="./static/videos/Showcase.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+
         </div>
       </div>
     </div>
-</section>
+    <!--/ Matting. -->
 
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Effect Contrast</h2>
 
-<!--/ Houdini Part  End -->
-<!-- UnrealPlugin Part Start -->
-<section class="section">
-  <div class="container is-centered">
-    <!-- Houdini Part Start -->
-      <div class="columns is-centered">
-      <div class="column">
-        <div class="content">
-          <h2 class="title is-3">Unreal Plugin</h2>
-          <h3>Using with HDA</h3>
-          <br>
+        <!-- Interpolating. -->
+        <h3 class="title is-4">Mesh Simplification</h3>
+        <div class="content has-text-justified">
           <p>
-            Enter the model file and set the corresponding rule parameters (such as the leaf material name of your model, this will be used to identify and distinguish the leaf part from the trunk part)
+            We can also animate the scene by interpolating the deformation latent codes of two input
+            frames. Use the slider here to linearly interpolate between the left frame and the right
+            frame.
           </p>
         </div>
-      </div>
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_start.jpg"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+            <p>Houdini Mesh Simplification</p>
+          </div>
+          <div class="column is-3 has-text-centered">
+            <img src="./static/images/interpolate_end.jpg"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+            <p class="is-bold">Our Mesh Simplification</p>
+          </div>
+          <div class="column interpolation-video-column">
+            <div id="interpolation-image-wrapper">
+              Assets Complexity increasing...
+            </div>
+            <input class="slider is-fullwidth is-large is-info"
+                   id="interpolation-slider"
+                   step="1" min="0" max="100" value="0" type="range">
+          </div>
 
-      <div class="column">
-        <br><br>
-        <div class="content has-text-justified">
-          <img src="./static/images/config1.png"
-          class="column is-vcentered"
-          alt="Interpolation end reference image."/>
-      </div>
-      <div class="content has-text-justified">
-        <img src="./static/images/config2.png"
-              class="column is-vcentered"
-              alt="Interpolation end reference image."/>
         </div>
-      </div>
-    </div>
-</section>
-<!--/ UnrealPlugin Part  End -->
+        <br/>
+        <!--/ Interpolating. -->
 
-
- <!-- Effect Contrast. -->
-<!-- Leaves Mesh Generation -->
-<section class="section">
-  <div class="container is-centered">
-    <!-- Houdini Part Start -->
-      <div class="columns is-centered">
-      <div class="column">
-        <div class="content">
-          <h2 class="title is-3">Effect Contrast</h2>
-          <h3>Leaves Mesh Generation</h3>
-          <br>
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">LOD Generation</h3>
+        <div class="content has-text-justified">
           <p>
-            Enter the model file and set the corresponding rule parameters (such as the leaf material name of your model, this will be used to identify and distinguish the leaf part from the trunk part)
+            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
+            viewpoint such as a stabilized camera by playing back the training deformations.
           </p>
         </div>
-      </div>
-
-      <div class="column">
-        <br><br>
-        <div class="content has-text-justified">
-          <img src="./static/images/leaf1.png"
-               width="100%"
-               alt="Interpolation end reference image."/>
-      </div>
-      <div class="content has-text-justified">
-        <img src="./static/images/leaf2.png"
-        width="100%"
-        alt="Interpolation end reference image."/>
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="75%">
+            <source src="./static/videos/Showcase.mp4"
+                    type="video/mp4">
+          </video>
         </div>
+        <!--/ Re-rendering. -->
+
+
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">Asset Export to Unreal</h3>
+        <div class="content has-text-justified">
+          <p>
+            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
+            viewpoint such as a stabilized camera by playing back the training deformations.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="75%">
+            <source src="./static/videos/Showcase.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <!--/ Re-rendering. -->
       </div>
     </div>
-</section>
- <!-- Leaves Mesh Generation -->
+    <!--/ Animation. -->
 
-
-
- <section class="section">
-  <div class="container is-max-desktop">
+    
     <!-- Concurrent Work. -->
     <div class="columns is-centered">
       <div class="column is-full-width">
@@ -411,11 +423,11 @@
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@article{nanitetree,
-  author    = {jiayaozhang,Hikohuang},
+    <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
   title     = {Nerfies: Deformable Neural Radiance Fields},
   journal   = {ICCV},
-  year      = {2023},
+  year      = {2021},
 }</code></pre>
   </div>
 </section>
@@ -446,62 +458,5 @@
   </div>
 </footer>
 
-
-<!-- <section class="hero is-light is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-steve">
-          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/Showcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div> -->
-        <!-- <div class="item item-chair-tp">
-          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/Showcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-shiba">
-          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/Showcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-fullbody">
-          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/Showcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-blueshirt">
-          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/bShowcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-mask">
-          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/Showcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-coffee">
-          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/Showcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-toby">
-          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/Showcase.mp4"
-                    type="video/mp4">
-          </video>
-        </div> -->
-      <!-- </div>
-    </div>
-  </div>
-</section> -->
 </body>
 </html>
