@@ -503,6 +503,150 @@
  <!-- Meshlets Pipeline Generation -->
 
 
+<!-- Nanite Virtual Geometry start-->
+<section class="section">
+  <div class="container is-centered">
+    <!-- Houdini Part Start -->
+      <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <div class="content has-text-justified">
+            <h2 class="title is-3">Nanite Detailed Analysis</h2>
+          <br>
+          <p>
+            The comprehensive implementation of Nanite involves a multitude of engineering accumulations, including GPU-Driven, software rasterization, geometric modeling, BMT processing, and data compression. What is particularly commendable is the integration of these diverse elements into an already intricate Deferred rendering architecture while ensuring that it runs efficiently and maintains transparency in the upper-level design processes. Transparency in this context means that changes in the underlying architecture do not impact the users' original methods of operation and development workflows. Achieving this requires not only extensive knowledge in graphics development but also a seasoned proficiency in engine engineering, substantial courage, and even a touch of audacious spirit.
+            From a macro perspective, the overall Nanite rendering pipeline can be outlined as follows:
+            Now, let's delve into an analysis of each key stage.
+          </p>
+        </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <br><br><br><br>
+        <div class="content has-text-justified">
+          <img src="./static/images/cluster.png"
+               width="100%"
+               alt="Interpolation end reference image."/>
+      </div>
+      </div>
+    </div>
+</section>
+<!-- Nanite Virtual Geometry end-->
+
+
+
+
+
+
+<!-- Meshlets Pipelines Generation -->
+<section class="section">
+  <div class="container is-centered">
+    <!-- Houdini Part Start -->
+      <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <div class="content has-text-justified">
+
+          <h3>Cluster Building Stage</h3>
+          <br>
+          <p>
+            The entire mesh is divided into clusters, each consisting of 128 triangles, following the “Lowest Contribution Boundary” and “As Uniform Area as Possible” partitioning strategy between clusters. This ensures minimal errors in subsequent simplification processes. The logic for LOD construction is as follows: Initially, 32 to 64 clusters form a Cluster Group. A crucial step in this process is the Lock Edge operation performed on the Cluster Group, which is fundamental to ensuring a well-structured partition. Subsequently, triangles within the group undergo a merging process, gradually eliminating internal boundaries without affecting the group’s perimeter. This step employs a dedicated triangle simplifier using the QEM (Quadratic Error Metric) simplification algorithm. This yields a LOD1-level Cluster Group. The next step involves performing splits within the LOD1-level Cluster Group, effectively re-partitioning the triangles.
+          </p>
+          <p>
+            From the simplification diagram above [each cluster represented by 4 triangles for illustration], it can be observed that the boundaries and shapes of the triangles generated after simplification are no longer related to the original LOD level. The simplification process is not a crude “merge” or “collapse” of triangles; instead, the outer boundaries of the entire group are locked. The simplification process adheres to the strategy of “Lowest Contribution Boundary” and “As Uniform Area as Possible,” ensuring that each simplification maintains consistent area proportions and coverage between the “triangular strips.” This minimizes projection errors and enhances texture mapping precision.
+          </p>
+          <p>
+            Each iteration follows the aforementioned principles, and after each generation of a new LOD through Grouping, Merging, Simplification, and Splitting, the errors for each Cluster and Group are recorded. These errors, along with the errors from the next iteration, are used to calculate the maximum error metric (Max Error Metric). This results in a LOD tree where errors are in descending order with an increase in face count. This enables subsequent comparisons of screen projection ratios and errors to dynamically select the appropriate LOD level. The iterator generates a tree structure with a root node containing only one Cluster, and a BVH (Bounding Volume Hierarchy) is built based on this structure to accelerate GPU-Driven Culling. The entire process is parallelized.
+            After BVH construction, a paged data storage model is established on a Cluster Group basis, with each page being 128kb. A constraint is imposed that only Cluster Groups that are spatially adjacent and belong to the same LOD are placed in the same page. To ensure spatial adjacency and data layout continuity, “Morton 3D” is employed. Notably, the vertex information held by the Nanite Mesh is minimal, potentially lacking data such as Vertex Tangents. Tangent data is calculated in real-time based on existing point attributes, following two principles: first, eliminate data that can be calculated to save storage, I/O pressure, and index calculations; second, minimize the bit count for mandatory attributes.
+            After the completion of the Nanite Mesh construction process, a crucial step is data compression. Given the large number of vertices and the need for a global Vertex Buffer for efficient real-time streaming operations, data compression is essential. The specific compression algorithm is yet to be determined, but it involves a trade-off between precision loss and performance. Epic Games undoubtedly aims to strike the optimal balance.
+          </p>
+          </div>
+      </div>
+    </div>
+
+      <div class="column">
+        <br><br><br><br>
+        <div class="content has-text-justified">
+          <img src="./static/images/cluster1.png"
+          width="100%"
+          alt="Interpolation end reference image."/>
+          </div>
+          <br><br>
+          <div class="content has-text-justified">
+            <img src="./static/images/qem.png"
+            width="100%"
+            alt="Interpolation end reference image."/>
+            </div>
+      </div>
+    </div>
+</section>
+ <!-- Meshlets Pipeline Generation -->
+
+
+
+
+
+
+<!-- Nanite Virtual Geometry start-->
+<section class="section">
+  <div class="container is-centered">
+    <!-- Houdini Part Start -->
+      <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <div class="content has-text-justified">
+            <h2 class="title is-3">Culling Stage</h2>
+          <br>
+          <p>
+            Culling in Nanite is entirely GPU-driven. The process includes View Frustum Culling and Hierarchical Z-Buffer (HZB) culling. Backface Culling and Small Triangle Culling are not performed at this stage. There are three levels of culling. First is at the Instance level, which is the granularity achievable by traditional rendering pipelines. Next, after Instance culling, the Mesh undergoes BVH (Bounding Volume Hierarchy) Node Culling, which is hierarchical and dynamic.
+            Ensuring load balancing across Compute Shader (CS) thread groups is crucial, ensuring that each thread is fully utilized without idling. Due to potentially significant differences in BVH depth for each Mesh, it’s inappropriate to allocate thread groups based on Cluster leaf nodes. In UE5, a global First-In-First-Out (FIFO) queue is maintained to retrieve BVH nodes. If a node passes culling, all its child nodes are moved to the end of the queue. This process continues until the global queue is empty. This approach ensures that the processing time is roughly equal among threads. Nodes that pass are further subjected to Cluster-level culling, and after three levels of culling, the retained triangle faces exhibit significantly reduced waste compared to traditional pipelines.
+          </p>
+          <p>
+            In reality, the entire culling process consists of two passes: the Main Pass and the Post Pass. From the diagram, these two passes share similar logic, with the difference lying in the fact that the occlusion culling in the Main Pass is based on data from the previous frame, whereas the Post Pass utilizes the Hierarchical Z-Buffer (HZB) constructed at the end of the Main Pass for the current frame. The primary purpose of these two passes is to enhance the accuracy of culling.
+            Additionally, during the Cluster culling stage, triangles are marked to determine whether they will undergo software rasterization or hardware rasterization, depending on their size.
+          </p>
+        </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <br><br><br><br>
+        <div class="content has-text-justified">
+          <img src="./static/images/culling.png"
+               width="100%"
+               alt="Interpolation end reference image."/>
+      </div>
+      </div>
+    </div>
+</section>
+<!-- Nanite Virtual Geometry end-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  <section class="section">
   <div class="container is-max-desktop">
     <!-- Concurrent Work. -->
