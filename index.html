@@ -286,13 +286,14 @@
       <div class="columns is-centered">
       <div class="column">
         <div class="content">
+          <div class="content has-text-justified">
           <h2 class="title is-3">Houdini</h2>
           <h3>Using with HDK & Python</h3>
           <br>
           <p>
             Enter the model file and set the corresponding rule parameters (such as the leaf material name of your model, this will be used to identify and distinguish the leaf part from the trunk part)
           </p>
-
+        </div>
         </div>
       </div>
 
@@ -316,6 +317,7 @@
       <div class="columns is-centered">
       <div class="column">
         <div class="content">
+          <div class="content has-text-justified">
           <h2 class="title is-3">Unreal Plugin</h2>
           <h3>Using with HDA</h3>
           <br>
@@ -324,7 +326,7 @@
           </p>
         </div>
       </div>
-
+    </div>
       <div class="column">
         <br><br>
         <div class="content has-text-justified">
@@ -351,6 +353,7 @@
       <div class="columns is-centered">
       <div class="column">
         <div class="content">
+          <div class="content has-text-justified">
           <h2 class="title is-3">Effect Contrast</h2>
           <h3>Leaves Mesh Generation</h3>
           <br>
@@ -359,6 +362,7 @@
           </p>
         </div>
       </div>
+    </div>
 
       <div class="column">
         <br><br>
@@ -377,6 +381,126 @@
 </section>
  <!-- Leaves Mesh Generation -->
 
+<!-- Nanite Virtual Geometry start-->
+<section class="section">
+  <div class="container is-centered">
+    <!-- Houdini Part Start -->
+      <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <div class="content has-text-justified">
+          <h2 class="title is-3">Nanite virtual Geometry Technology</h2>
+          <h3>GPU-Driven Pipeline</h3>
+          <br>
+          <p>
+            “GPU-Driven” is also a well-discussed topic. In the traditional Vertex-Raster-Pixel Shading pipeline execution process, the GPU front end, after processing instructions from the Host Interface, has the Primitive Distributor distribute mesh information in batches from the Index Buffer to various GPCs (in the case of Nvidia GPUs). Within the SM unit, the PolyMorph Engine takes on responsibilities such as Vertex Fetch, Tessellation, Viewport Transform, Attributes Setup, and Stream Out, connecting the rendering pipeline’s upstream and downstream segments. Under the guidance of the Warp Scheduler, thread bundles complete Vertex calculations, then pack the data to the Raster Engine for hardware rasterization. The processed data is then sent back to the SM unit for Pixel stage shading and ultimately output by the ROP. The entire process is seamless, and apart from the programmable parts in the GPU stages, there is limited control. The remaining logic computations and organizational aspects are predominantly handled by the CPU.
+          </p>
+          <p>
+            On one hand, the increasing pressure on the CPU makes it desirable for the GPU to assist in computations beyond rendering. On the other hand, there is a desire for even more precise culling than at the Object or Instance level. Given the compactness of the aforementioned pipeline, it is necessary to find an executor for this work outside the traditional rendering pipeline, and currently, the only option seems to be the Compute Shader! With capable hands on deck, the next step is to address one crucial aspect: how the GPU independently tackles computation, decision-making, and most importantly, the DrawCall problem. Thanks to certain features of new versions of Graphics APIs, such as Indirect Draw, some tasks that were originally entirely CPU-implemented can be delegated to the GPU for computation and data read/write operations. This approach not only reduces the communication latency between GPU and CPU but also maximizes the GPU’s parallel computing capabilities to further refine culling granularity, thus reducing OverDraw in the rendering pipeline. This is the essence of the GPU-Driven approach.
+          </p>
+          <p>
+            In this field, some projects provide valuable engineering references, such as Ubisoft’s presentation on “GPU-Driven Rendering Pipelines” at SIGGRAPH 2015 1, where they discussed various GPU-based culling techniques, including Cluster-based culling and the support of Virtual Texture throughout the GPU-driven pipeline. They introduced an intriguing concept called “Single Draw Call Rendering,” where an entire scene is rendered with a single Draw Call. Although somewhat idealized, it indeed significantly improves overall performance.
+
+            Following this, at GDC 2016, EA’s Frostbite Engine presented their GPU-Driven solution in “Optimizing the Graphics Pipeline with Compute” 2. In the subsequent years, Ubisoft continued to share GPU-Driven rendering solutions in 2018 and 2019 at GDC. These included the terrain rendering approach in “Far Cry 5” 3 and “GPU Driven Rendering and Virtual Textureing in ‘Trials Rising’” 4.
+            
+            Unreal Engine 4 (UE4) also designed its GPU-Driven solution in earlier versions, and these technological foundations have now been employed as part of the Nanite framework. Essentially, the entire Nanite framework is built upon GPU-Driven principles.          
+          </p>
+        </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <br><br>
+        <div class="content has-text-justified">
+          <img src="./static/images/pipeline.png"
+               width="100%"
+               alt="Interpolation end reference image."/>
+      </div>
+      <br><br> <br><br>
+      <div class="content has-text-justified">
+        <img src="./static/images/nanite.png"
+             width="100%"
+             alt="Interpolation end reference image."/>
+    </div>
+      </div>
+    </div>
+</section>
+<!-- Nanite Virtual Geometry end-->
+
+
+<!-- Nanite Virtual Geometry start-->
+<section class="section">
+  <div class="container is-centered">
+    <!-- Houdini Part Start -->
+      <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <div class="content has-text-justified">
+          <h3>Hardware & Software rasterization</h3>
+          <br>
+          <p>
+            Nanite employs a hybrid rasterization strategy, addressing the fundamental question of when hardware rasterization is appropriate versus when software rasterization is more suitable.
+            Hardware rasterization typically involves two steps: Coarse Rasterization at an 8x8 pixel block level and Fine Rasterization at a 2x2 pixel block level. During Coarse Rasterization, obscured blocks are culled using a low-resolution Z-Buffer, leaving only the visible areas for shading. Then, Fine Rasterization operates at a 2x2 pixel block level (Pixel Quad) to perform the final rasterization output. This design choice, with blocks of 2x2 pixels, enables access to neighboring pixel information for executing DDX, DDY operations to facilitate hardware-level MIP calculations. The historical rationale behind this design stems from early days when most triangles were significantly larger than a single pixel. Compared to the extensive fetch of vertex attributes, texture sampling, and numerous shading calculations, hardware rasterization incurred relatively low overhead in the rendering pipeline, making it highly efficient for most scenarios.
+            However, this “one-size-fits-most” approach occasionally leads to significant inefficiencies, especially when scenes contain a high density of triangles, with many triangles occupying less than a single pixel. In such cases, the coarse culling in Coarse Rasterization becomes largely ineffective, and Fine Rasterization faces substantial waste. For instance, a small triangle spanning three Pixel Quads may realistically cover only three pixels, but the 2x2 Quad mechanism would process all twelve pixels, resulting in considerable computational overhead.
+            In scenarios like these, where triangles densely populate the viewport and many occupy less than a single pixel, software rasterization can be more efficient. Coupled with GPU-Driven techniques, Cluster or Meshlet-level culling further narrows down the triangle range for rasterization. Most importantly, the entire system seamlessly integrates into a unified pipeline.
+          </p>
+        </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <br><br><br><br>
+        <div class="content has-text-justified">
+          <img src="./static/images/meshlets.png"
+               width="50%"
+               style="margin-left: 120px;" 
+               alt="Interpolation end reference image."/>
+      </div>
+      </div>
+    </div>
+</section>
+<!-- Nanite Virtual Geometry end-->
+
+
+<!-- Meshlets Pipelines Generation -->
+<section class="section">
+  <div class="container is-centered">
+    <!-- Houdini Part Start -->
+      <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <div class="content has-text-justified">
+          <h3>MeshShader</h3>
+          <br>
+          <p>
+            Nvidia unveiled its proprietary Mesh Shader pipeline at SIGGRAPH 2019 [5], taking GPU-Driven approaches directly to the hardware level in a single leap. The rationale behind this advancement lies in addressing the potential “inefficiency” risk associated with traditional GPU-Driven methods, primarily stemming from the historical baggage of the rasterization pipeline’s execution flow.
+
+            Without considering technologies like Virtual Texturing (VT), GPU-Driven solutions primarily tackle culling issues. If a target triangle is successfully culled, it’s advantageous. However, if not, it involves a convoluted process of data storage, computation, register writing, and subsequent reading. This is because, without considering software rasterization, the triangle ultimately needs to return to the original rendering pipeline, undergoing another Vertex Fetch process. Before Vertex Fetch, there are fixed pipelines like Primitive Distributor that cannot be bypassed.
+            
+            Nvidia’s solution involves a radical departure by discarding the traditional Vertex Shader (VS), Tessellation, and Geometry stages. Instead, they establish a new paradigm where Meshlets, after collaborative thread group computations for culling, seamlessly interface with the hardware rasterizer. This streamlined approach ensures a more efficient and direct integration of GPU-Driven techniques into the hardware pipeline.          </p>
+            <p>
+              In this setup, the Task Shader essentially takes on the role of culling previously handled by Compute Shaders (CS), while the Mesh Shader itself assumes responsibility for geometric topology. However, it’s notable that Nanite is not based on Mesh Shader technology. The question arises: Why? One speculation is that Mesh Shaders might not directly address the challenge of handling vast numbers of small triangles. Additionally, the current high hardware costs for users adopting Mesh Shader technology could hinder its widespread adoption. Therefore, a more conservative approach utilizing Compute Shaders for GPU-Driven techniques and a hybrid rasterization scheme might be preferable. According to official statements, Nanite’s innovation lies in LOD (Level of Detail) construction and Culling, areas that have been the focal points of technical showcase by major game developers over the past decade.
+            </p>
+          </div>
+      </div>
+    </div>
+
+      <div class="column">
+        <!-- <br><br> -->
+        <div class="content has-text-justified">
+          <img src="./static/images/meshpipeline.png"
+               width="100%"
+               alt="Interpolation end reference image."/>
+      </div>
+      <div class="content has-text-justified">
+        <img src="./static/images/meshpipeline2.png"
+        width="100%"
+        alt="Interpolation end reference image."/>
+        </div>
+      </div>
+    </div>
+</section>
+ <!-- Meshlets Pipeline Generation -->
 
 
  <section class="section">
