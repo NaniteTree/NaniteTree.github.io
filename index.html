@@ -625,24 +625,46 @@
 
 
 
+<!-- Nanite Virtual Geometry start-->
+<section class="section">
+  <div class="container is-centered">
+    <!-- Houdini Part Start -->
+      <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <div class="content has-text-justified">
+            <h2 class="title is-3">Culling Stage</h2>
+          <br>
+          <p>
+            The Visibility Buffer can achieve storage with fewer index details, typically involving InstanceID, PrimitiveID, MaterialID, and Depth. As it stores index information, its volume is inherently smaller than that of the G-Buffer. However, it requires maintaining a global set of Vertex Attributes and a Material Map. In the Shading stage, the process involves indexing relevant triangle information from the global Vertex Buffer based on InstanceID and PrimitiveID. Pixel-wise information is then interpolated based on barycentric coordinates. Material information is obtained from MaterialID, and together they enter the lighting calculation process to achieve the final shading. This process, to some extent, allows for the separation of geometric and shading calculations, a feat not achievable in traditional Deferred rendering, where G-Buffer serves as the bridge between geometry and shading.          </p>
+          <p>
+            In the Nanite workflow, the format of the Visibility Buffer is R32G32_UNIT, where R’s 0-6 bits store Triangle ID, 7-31 bits store Cluster ID, and G contains 32-bit Depth information. Considering the Deferred architecture of the UE4 era, on the one hand, Nanite currently cannot support all types of rendering, and some meshes still need to be rendered using the traditional rendering pipeline. On the other hand, as mentioned by Karis, a crucial premise of this architectural adjustment is transparency to users. This means that changes in the underlying structure should not impact user-level habits or require relearning the engine, which is crucial. To ensure compatibility between the new and old rendering pipelines, there is an Emit Targets stage to connect Nanite with the traditional deferred rendering approach.          </p>
+          <p>
+            The Emit Targets stage is further divided into EmitDepthTargets and EmitGBuffer phases. Initially, besides the Visibility Buffer, shading requires additional data to blend with hard rasterization data. Nanite employs several full-screen passes to write information outside the Visibility Buffer (such as Velocity, Stencil, Nanite Mask, MaterialID) into a unified buffer, preparing for the subsequent GBuffer reconstruction. Specifically, Emit Scene Depth writes the Depth from the Visibility Buffer into the Scene Depth buffer, Emit Velocity writes into the Velocity Buffer, Emit Scene Stencil writes into the Stencil buffer, and Emit Material Depth writes into the Material ID buffer.
 
+            Regarding the MaterialID Buffer, several strategies are employed, depending on the scene’s material complexity. When there are numerous materials, the screen is divided into 64x64 blocks, and the minimum and maximum values of materials in each block are calculated. This calculation is executed by a full-screen Compute Shader, resulting in an image called Material Range. With this image, in the EmitGbuffer phase, a full-screen draw is triggered for each material, where culling is completed in the Vertex Shader (VS) stage. In the Pixel Shader (PS) stage, shading is applied only to corresponding pixels through Depth Compare, thus outputting information such as Albedo into the GBuffer.
+          </p>
+          </div>
+        </div>
+      </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      <div class="column">
+        <br><br><br><br><br><br>
+        <div class="content has-text-justified">
+          <img src="./static/images/visibility.png"
+               width="100%"
+               alt="Interpolation end reference image."/>
+      </div>
+      <br><br><br><br>
+      <div class="content has-text-justified">
+        <img src="./static/images/Emit.png"
+             width="100%"
+             alt="Interpolation end reference image."/>
+    </div>
+      </div>
+    </div>
+</section>
+<!-- Nanite Virtual Geometry end-->
 
 
 
@@ -662,11 +684,45 @@
             <a href="https://faculty.cc.gatech.edu/~turk/my_papers/memless_vis98.pdf">Lindstrom-Turk Cost and Placement Strategy</a> introduces edge collapse operation for triangle Simplification.
           </p>
           <p>
-            <a href="https://faculty.cc.gatech.edu/~turk/my_papers/memless_vis98.pdf">Garland-Heckbert Cost and Placement Strategy</a> based on iterative edge contraction and quadric error metrics which can rapidly produce high quality approximations.
+            <a href="https://faculty.cc.gatech.edu/~turk/my_papers/memless_vis98.pdf">Garland-Heckbert Cost and Placement Strategy</a> based on iterative edge contraction and quadric error metrics.
           </p>
           <p>
             <a href="https://faculty.cc.gatech.edu/~turk/my_papers/memless_vis98.pdf">Cost Strategy Policies</a> is selected through three strategies: GetPlacement, GetCost and Filter.
           </p>
+          <p>
+            SIGGRAPH 2015 ubisoft, <a href="http://advances.realtimerendering.com/s2015/aaltonenhaar_siggraph2015_combined_final_footer_220dpi.pdf">GPU-Driven Rendering Pipelines</a> 
+          </p>
+          <p>
+            GDC 2018 Ubisoft, <a href="https://www.gdcvault.com/play/1025480/Terrain-Rendering-in-Far-Cry">Terrian Rendering in "Far Cry 5"</a> 
+          </p>
+          <p>
+            GDC 2019 Ubisoft, <a href="https://ubm-twvideo01.s3.amazonaws.com/o1/vault/gdc2019/presentations/Drazhevskyi_Oleksandr_GPU_Driven_Rendering.pdf">GPU Driven Rendering and Virtual Textureing in "Trials Rising"   </a> 
+          </p>
+          <p>
+            Based on Turing architecture GPU <a href="https://developer.nvidia.com/zh-cn/blog/introduction-turing-mesh-shaders">Mesh Shader </a> 
+          </p>
+          <p>
+            SIGGRAPH 2021 Epic Games Brian Karis  <a href="https://advances.realtimerendering.com/s2021/Karis_Nanite_SIGGRAPH_Advances_2021_final.pdf">Nanite A Deep Dive </a> 
+          </p>
+          <p>
+            王祢  <a href="https://www.gameres.com/891789.html">虚幻引擎5的开发路线图及技术解析 </a> 
+          </p>
+          <p>
+            Jiff   <a href="https://zhuanlan.zhihu.com/p/376267968">UE5 Nanite实现浅析 </a> 
+          </p>
+          <p>
+            洛城  <a href="https://zhuanlan.zhihu.com/p/382687738#ref_6">UE5渲染技术简介：Nanite篇  </a> 
+          </p>
+          <p>
+            丛越  <a href="https://zhuanlan.zhihu.com/p/377652639">UE5 Nanite 源码解析之渲染篇：Rasterization</a> 
+          </p>
+          <p>
+            向往  <a href="https://www.cnblogs.com/timlly/p/14927797.html">UE5特辑Part1 ： Nanite </a> 
+          </p>
+          <p>
+            Helo <a href="https://zhuanlan.zhihu.com/p/477998497">UE5中的Nanite植被制作指南 </a> 
+          </p>
+
         </div>
       </div>
     </div>
