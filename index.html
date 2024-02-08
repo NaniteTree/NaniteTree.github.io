@@ -63,10 +63,10 @@
           Language
         </a>
         <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://nanitetree.github.io">
+          <a class="navbar-item" href="index_cn.html">
             CN
           </a>
-          <a class="navbar-item" href="https://hypernerf.github.io">
+          <a class="navbar-item" href="index.html">
             EN
           </a>
         </div>
@@ -99,7 +99,7 @@
             <div class="publication-links">
               <!-- PDF Link. -->
               <span class="link-block">
-                <a href="https://github.com/jiayaozhang/NaniteTree_Imposter2Mesh_Simplification"
+                <a href="https://github.com/jiayaozhang/NaniteTree"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -108,7 +108,7 @@
                 </a>
               </span>
               <span class="link-block">
-                <a href="https://github.com/jiayaozhang/NaniteTree_Imposter2Mesh_Simplification"
+                <a href="https://github.com/jiayaozhang/NaniteTree"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="ai ai-arxiv"></i>
@@ -118,7 +118,7 @@
               </span>
 
               <span class="link-block">
-                <a href="https://github.com/jiayaozhang/NaniteTree_Imposter2Mesh_Simplification"
+                <a href="https://github.com/jiayaozhang/NaniteTree"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
@@ -205,6 +205,9 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Pipeline Overview</h2>
         <div class="content has-text-justified">
+          <img src="https://hikohiko.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F0d608712-81b7-41af-8caa-374d0e8f6ab6%2F0634b59b-e0eb-4a5f-9a3f-4ca01880fccc%2FUntitled.png?table=block&id=1c590fd1-b87c-4c16-bea4-21535de076fa&spaceId=0d608712-81b7-41af-8caa-374d0e8f6ab6&width=2000&userId=&cache=v2"
+          class="column is-vcentered"
+          alt="Interpolation end reference image."/>
           <p>
             In addition to providing automated asset conversion functions,
             this tool also allows artists to fine-tune parameters as needed to optimize the final rendering effects. 
@@ -429,9 +432,9 @@
             On one hand, the increasing pressure on the CPU makes it desirable for the GPU to assist in computations beyond rendering. On the other hand, there is a desire for even more precise culling than at the Object or Instance level. Given the compactness of the aforementioned pipeline, it is necessary to find an executor for this work outside the traditional rendering pipeline, and currently, the only option seems to be the Compute Shader! With capable hands on deck, the next step is to address one crucial aspect: how the GPU independently tackles computation, decision-making, and most importantly, the DrawCall problem. Thanks to certain features of new versions of Graphics APIs, such as Indirect Draw, some tasks that were originally entirely CPU-implemented can be delegated to the GPU for computation and data read/write operations. This approach not only reduces the communication latency between GPU and CPU but also maximizes the GPU’s parallel computing capabilities to further refine culling granularity, thus reducing OverDraw in the rendering pipeline. This is the essence of the GPU-Driven approach.
           </p>
           <p>
-            In this field, some projects provide valuable engineering references, such as Ubisoft’s presentation on “GPU-Driven Rendering Pipelines” at SIGGRAPH 2015 1, where they discussed various GPU-based culling techniques, including Cluster-based culling and the support of Virtual Texture throughout the GPU-driven pipeline. They introduced an intriguing concept called “Single Draw Call Rendering,” where an entire scene is rendered with a single Draw Call. Although somewhat idealized, it indeed significantly improves overall performance.
+            In this field, some projects provide valuable engineering references, such as Ubisoft’s presentation on “GPU-Driven Rendering Pipelines” at SIGGRAPH 2015 <a href="http://advances.realtimerendering.com/s2015/aaltonenhaar_siggraph2015_combined_final_footer_220dpi.pdf">[1]</a>, where they discussed various GPU-based culling techniques, including Cluster-based culling and the support of Virtual Texture throughout the GPU-driven pipeline. They introduced an intriguing concept called “Single Draw Call Rendering,” where an entire scene is rendered with a single Draw Call. Although somewhat idealized, it indeed significantly improves overall performance.
 
-            Following this, at GDC 2016, EA’s Frostbite Engine presented their GPU-Driven solution in “Optimizing the Graphics Pipeline with Compute” 2. In the subsequent years, Ubisoft continued to share GPU-Driven rendering solutions in 2018 and 2019 at GDC. These included the terrain rendering approach in “Far Cry 5” 3 and “GPU Driven Rendering and Virtual Textureing in ‘Trials Rising’” 4.
+            Following this, at GDC 2016, EA’s Frostbite Engine presented their GPU-Driven solution in “Optimizing the Graphics Pipeline with Compute” <a href="https://www.gdcvault.com/play/1023109/Optimizing-the-Graphics-Pipeline-With">[2]</a>. In the subsequent years, Ubisoft continued to share GPU-Driven rendering solutions in 2018 and 2019 at GDC. These included the terrain rendering approach in “Far Cry 5” <a href="https://www.gdcvault.com/play/1025480/Terrain-Rendering-in-Far-Cry">[3]</a> and “GPU Driven Rendering and Virtual Textureing in Trials Rising” <a href="https://ubm-twvideo01.s3.amazonaws.com/o1/vault/gdc2019/presentations/Drazhevskyi_Oleksandr_GPU_Driven_Rendering.pdf">[4]</a>.
             
             Unreal Engine 4 (UE4) also designed its GPU-Driven solution in earlier versions, and these technological foundations have now been employed as part of the Nanite framework. Essentially, the entire Nanite framework is built upon GPU-Driven principles.          
           </p>
@@ -503,7 +506,7 @@
           <h3>MeshShader</h3>
           <br>
           <p>
-            Nvidia unveiled its proprietary Mesh Shader pipeline at SIGGRAPH 2019, taking GPU-Driven approaches directly to the hardware level in a single leap. The rationale behind this advancement lies in addressing the potential “inefficiency” risk associated with traditional GPU-Driven methods, primarily stemming from the historical baggage of the rasterization pipeline’s execution flow.
+            Nvidia unveiled its proprietary Mesh Shader pipeline at SIGGRAPH 2019 <a href="https://developer.nvidia.com/zh-cn/blog/introduction-turing-mesh-shaders/">[5]</a>, taking GPU-Driven approaches directly to the hardware level in a single leap. The rationale behind this advancement lies in addressing the potential “inefficiency” risk associated with traditional GPU-Driven methods, primarily stemming from the historical baggage of the rasterization pipeline’s execution flow.
 
             Without considering technologies like Virtual Texturing (VT), GPU-Driven solutions primarily tackle culling issues. If a target triangle is successfully culled, it’s advantageous. However, if not, it involves a convoluted process of data storage, computation, register writing, and subsequent reading. This is because, without considering software rasterization, the triangle ultimately needs to return to the original rendering pipeline, undergoing another Vertex Fetch process. Before Vertex Fetch, there are fixed pipelines like Primitive Distributor that cannot be bypassed.
             
@@ -544,9 +547,9 @@
             <h2 class="title is-3">Nanite Detailed Analysis</h2>
           <br>
           <p>
-            The comprehensive implementation of Nanite involves a multitude of engineering accumulations, including GPU-Driven, software rasterization, geometric modeling, BMT processing, and data compression. What is particularly commendable is the integration of these diverse elements into an already intricate Deferred rendering architecture while ensuring that it runs efficiently and maintains transparency in the upper-level design processes. Transparency in this context means that changes in the underlying architecture do not impact the users' original methods of operation and development workflows. Achieving this requires not only extensive knowledge in graphics development but also a seasoned proficiency in engine engineering, substantial courage, and even a touch of audacious spirit.
-            From a macro perspective, the overall Nanite rendering pipeline can be outlined as follows:
-            Now, let's delve into an analysis of each key stage.
+            Currently, there aren’t many articles analyzing Nanite. Official resources primarily include Brian Karis’s presentation “Nanite: A Deep Dive” at SIGGRAPH 2021 <a href="https://advances.realtimerendering.com/s2021/Karis_Nanite_SIGGRAPH_Advances_2021_final.pdf">[6]</a>and Wang Mi’s “Development Roadmap and Technical Analysis of Unreal Engine 5” <a href="https://www.gameres.com/891789.html">[7]</a>.Regarding unofficial sources, four articles stand out for their quality technical insights <a href="https://zhuanlan.zhihu.com/p/376267968">[8]</a>,<a href="https://zhuanlan.zhihu.com/p/382687738#ref_6">[9]</a>,<a href="https://zhuanlan.zhihu.com/p/377652639">[10]</a>,<a href="https://www.jianshu.com/p/bace3fdc4a68">[11]</a>. Additionally, analysis is supplemented by examining the latest 5.0.3 source code.
+            Nanite’s comprehensive implementation involves a wealth of engineering expertise across various domains, including GPU-Driven techniques, software rasterization, geometric modeling, BMT processing, and data compression. What is particularly commendable is the integration of these diverse components into the already intricate Deferred rendering framework while ensuring both sufficient performance and transparency to the upper-level design processes. Transparency, in this context, means that alterations in the underlying architecture do not disrupt the users’ accustomed operations and development workflows. Achieving this demands not only extensive knowledge in graphics development but also seasoned engine engineering skills. Furthermore, it necessitates immense courage and, perhaps, a touch of audacity to undertake such a monumental task.
+            Achieving this goal sounds a bit outlandish, but then again, it’s Brian Karis, so it’s somewhat expected. Macroscopically, the rendering pipeline steps of Nanite appear as illustrated in the diagram on the right.
           </p>
         </div>
         </div>
@@ -584,7 +587,7 @@
             The entire mesh is divided into clusters, each consisting of 128 triangles, following the “Lowest Contribution Boundary” and “As Uniform Area as Possible” partitioning strategy between clusters. This ensures minimal errors in subsequent simplification processes. The logic for LOD construction is as follows: Initially, 32 to 64 clusters form a Cluster Group. A crucial step in this process is the Lock Edge operation performed on the Cluster Group, which is fundamental to ensuring a well-structured partition. Subsequently, triangles within the group undergo a merging process, gradually eliminating internal boundaries without affecting the group’s perimeter. This step employs a dedicated triangle simplifier using the QEM (Quadratic Error Metric) simplification algorithm. This yields a LOD1-level Cluster Group. The next step involves performing splits within the LOD1-level Cluster Group, effectively re-partitioning the triangles.
           </p>
           <p>
-            From the simplification diagram above each cluster represented by 4 triangles for illustration], it can be observed that the boundaries and shapes of the triangles generated after simplification are no longer related to the original LOD level. The simplification process is not a crude “merge” or “collapse” of triangles; instead, the outer boundaries of the entire group are locked. The simplification process adheres to the strategy of “Lowest Contribution Boundary” and “As Uniform Area as Possible,” ensuring that each simplification maintains consistent area proportions and coverage between the “triangular strips.” This minimizes projection errors and enhances texture mapping precision.
+            From the simplification diagram above each cluster represented by 4 triangles for illustration, it can be observed that the boundaries and shapes of the triangles generated after simplification are no longer related to the original LOD level. The simplification process is not a crude “merge” or “collapse” of triangles; instead, the outer boundaries of the entire group are locked. The simplification process adheres to the strategy of “Lowest Contribution Boundary” and “As Uniform Area as Possible,” ensuring that each simplification maintains consistent area proportions and coverage between the “triangular strips.” This minimizes projection errors and enhances texture mapping precision.
           </p>
           <p>
             Each iteration follows the aforementioned principles, and after each generation of a new LOD through Grouping, Merging, Simplification, and Splitting, the errors for each Cluster and Group are recorded. These errors, along with the errors from the next iteration, are used to calculate the maximum error metric (Max Error Metric). This results in a LOD tree where errors are in descending order with an increase in face count. This enables subsequent comparisons of screen projection ratios and errors to dynamically select the appropriate LOD level. The iterator generates a tree structure with a root node containing only one Cluster, and a BVH (Bounding Volume Hierarchy) is built based on this structure to accelerate GPU-Driven Culling. The entire process is parallelized.
@@ -720,7 +723,7 @@
             <a href="https://faculty.cc.gatech.edu/~turk/my_papers/memless_vis98.pdf">Cost Strategy Policies</a> is selected through three strategies: GetPlacement, GetCost and Filter.
           </p>
           <p>
-            SIGGRAPH 2015 ubisoft, <a href="http://advances.realtimerendering.com/s2015/aaltonenhaar_siggraph2015_combined_final_footer_220dpi.pdf">GPU-Driven Rendering Pipelines</a> 
+            SIGGRAPH 2015 ubisoft, <a href="http://advances.realtimerendering.com/s2015/aaltonenhaar_siggraph2015_combined_final_footer_220dpi.pdf">GPU-Driven Rendering Pipelines</a>
           </p>
           <p>
             GDC 2018 Ubisoft, <a href="https://www.gdcvault.com/play/1025480/Terrain-Rendering-in-Far-Cry">Terrian Rendering in "Far Cry 5"</a> 
