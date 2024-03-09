@@ -272,7 +272,7 @@
         <source src="./static/videos/GetInput.mp4"
                 type="video/mp4">
       </video>
-        </div>
+    </div>
   </div>
 </div> 
 </section>
@@ -298,11 +298,17 @@
 
       <div class="column">
         <br><br>
-        <div class="content has-text-justified">
+        <div class="publication-video">
+          <video id="process" autoplay muted loop playsinline height="10%">
+            <source src="./static/videos/GenerationResult.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <!-- <div class="content has-text-justified">
           <img src="./static/images/3.png"
                 class="interpolation-image"
                 alt="HDA Preview 5"/>
-        </div>
+        </div> -->
       </div>
     </div>
 </section>
@@ -310,29 +316,21 @@
   <div class="hero-body">
     <div class="container">
       <div id="results-carousel" class="carousel results-carousel">
-        <!-- <div class="item item-chair-tp">
-          <img src="./static/images/1.png" alt="Chair Image" height="200%">
+
+        <div class="item">
+          <img src="./static/images/2.png" alt="HDA Result" height="300%">
+        </div>
+        <!-- <div class="item item-blueshirt">
+          <img src="./static/images/3.png" alt="HDA Step 1" height="200%">
         </div> -->
-        <div class="item item-chair-tp">
-          <img src="./static/images/2.png" alt="HDA Preview " height="200%">
+        <div class="item">
+          <img src="./static/images/6.png" alt="HDA Leaves Settings" height="200%">
         </div>
-        <!-- <div class="item item-shiba">
-          <img src="./static/images/3.png" alt="Chair Image" height="800%">
+        <div class="item">
+          <img src="./static/images/7.png" alt="HDA Texture Settings" height="200%">
         </div>
-        <div class="item item-fullbody">
-          <img src="./static/images/4.png" alt="Chair Image" height="800%">
-        </div> -->
-        <div class="item item-blueshirt">
-          <img src="./static/images/5.png" alt="HDA Preview 1" height="200%">
-        </div>
-        <div class="item item-mask">
-          <img src="./static/images/6.png" alt="HDA Preview 2" height="200%">
-        </div>
-        <div class="item item-coffee">
-          <img src="./static/images/7.png" alt="HDA Preview 3" height="200%">
-        </div>
-        <div class="item item-toby">
-          <img src="./static/images/8.png" alt="HDA Preview 4" height="200%">
+        <div class="item">
+          <img src="./static/images/8.png" alt="HDA LOD Settings" height="200%">
         </div>
       </div>
     </div>
@@ -399,18 +397,51 @@
 
       <div class="column">
         <br><br>
-        <div class="content has-text-justified">
-          <img src="./static/images/leaf1.png"
-               width="100%"
-               alt="Interpolation end reference image."/>
-      </div>
-      <div class="content has-text-justified">
+        <div class="item item-chair-tp">
+          <img src="./static/images/sample/gen.png" alt="HDA Preview " height="80%">
+        </div>
+      <!-- <div class="content has-text-justified">
         <img src="./static/images/leaf2.png"
         width="100%"
         alt="Interpolation end reference image."/>
+        </div> -->
+      </div>
+    </div>
+</section>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <!-- <div class="item">
+          <img src="./static/images/leaf1.png" alt="HDA Preview " height="80%">
+        </div>
+        <div class="item">
+          <img src="./static/images/leaf2.png" alt="HDA Leaves Settings" height="200%">
+        </div> -->
+        <div class="item">
+          <img src="./static/images/sample/hd_compare25_leaf.png" alt="HoudiniPolyReduce" height="200%">
+        </div>
+        <div class="item">
+          <img src="./static/images/sample/nanitetree_compare25_leaf.png" alt="NaniteTreePolyReduce" height="200%">
+        </div>
+        <div class="item">
+          <img src="./static/images/sample/nanitetree_25_leaf.png" alt="NaniteTree" height="200%">
+        </div>
+        <div class="item">
+          <img src="./static/images/sample/nanitetree_50_leaf.png" alt="NaniteTree" height="200%">
+        </div>
+        <div class="item">
+          <img src="./static/images/sample/hd_reduce_25_leaf.png" alt="NaniteTree" height="200%">
+        </div>
+        <div class="item">
+          <img src="./static/images/sample/hd_reduce_50_leaf.png" alt="NaniteTree" height="200%">
+        </div>
+        <div class="item">
+          <img src="./static/images/sample/triangled_leaf.png" alt="NaniteTree" height="200%">
         </div>
       </div>
     </div>
+  </div>
 </section>
  <!-- Leaves Mesh Generation -->
 
