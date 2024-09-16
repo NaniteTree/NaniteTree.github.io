@@ -225,6 +225,50 @@
   </section>
 
 
+
+<!-- How to build your own hda tool Overview -->
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">How to build your own hda tool</h2>
+        <div class="content has-text-justified">
+          <video id="teaser" autoplay muted loop playsinline height="100%">
+            <source src="./static/videos/HowToUseNanateTreePipeLineTool.mp4"
+                    type="video/mp4">
+          </video>
+          <p>
+            In the previous version, the output consistently produced incorrect leaves. 
+            This was due to the [END_LOOP_Leaf] node toggling [single pass], 
+            which caused the loop to step in a single plane and generate only one leaf. 
+            As a result, all subsequent processes yielded incorrect outcomes.
+         </p>
+         <img src="./static/images/singlepass.png"
+         class="column is-vcentered"
+         alt="Interpolation end reference image."/>
+         <p>
+          When using, you must first determine the following information of the input model [Model name (name that affects the output) [Material name of the trunk] [Material name of the leaves] (This material name is the material slot name)
+         </p>
+         <img src="./static/images/DIYTree.png"
+         class="column is-vcentered"
+         alt="Interpolation end reference image."/>
+         <p>
+          You can modify the code here, mainly to control the buttons 
+         </p>
+         <img src="./static/images/Modify.png"
+         class="column is-vcentered"
+         alt="Interpolation end reference image."/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
 <!--/ Houdini Part  End -->
 <!-- UnrealPlugin Part Start -->
 <section class="section">

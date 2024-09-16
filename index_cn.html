@@ -223,6 +223,48 @@
   </section>
 
 
+
+
+<!-- How to build your own hda tool Overview -->
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">如果你想基于这个工具修改或是定制相关功能</h2>
+        <div class="content has-text-justified">
+          <video id="teaser" autoplay muted loop playsinline height="100%">
+            <source src="./static/videos/HowToUseNanateTreePipeLineTool.mp4"
+                    type="video/mp4">
+          </video>
+          <p>
+            在之前的版本中，输出始终产生错误的叶子。这是由于 [END_LOOP_Leaf] 节点切换了 [single pass]，导致循环在单个平面中执行并仅生成一个叶子。因此，所有后续过程都产生了错误的结果。
+         </p>
+         <img src="./static/images/singlepass.png"
+         class="column is-vcentered"
+         alt="Interpolation end reference image."/>
+         <p>
+          使用时要先确定 输入模型的以下信息 【模型名称 （影响输出的名字】【树干的材质名称】【树叶的材质名称】（这个材质名 是材质插槽名）
+        </p>
+         <img src="./static/images/DIYTree.png"
+         class="column is-vcentered"
+         alt="Interpolation end reference image."/>
+         <p>
+          这里可以修改代码  主要是控制按钮
+         </p>
+         <img src="./static/images/Modify.png"
+         class="column is-vcentered"
+         alt="Interpolation end reference image."/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
 <!--/ Houdini Part  End -->
 <!-- UnrealPlugin Part Start -->
 <section class="section">
